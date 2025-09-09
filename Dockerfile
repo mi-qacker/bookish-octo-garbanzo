@@ -1,5 +1,9 @@
 FROM node:22.19.0-alpine
 
 WORKDIR /usr/src/app
+
 COPY . .
-CMD ["node", "index.js"]
+RUN npm ci
+RUN npm run build
+
+CMD ["node", "dist/index.js"]
