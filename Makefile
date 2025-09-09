@@ -1,11 +1,20 @@
+BASE_IMAGE = node:22.19.0-bookworm
+IMAGE = bookish-octo-garbanzo:latest
+APP_PORT = 8080
+
 build:
-	docker build -t simple-nodejs:latest .
+	docker build -t $(IMAGE) .
+
 run: build
-	docker run -e PORT=8080 -p 8080:8080 simple-nodejs:latest
+	docker run \
+		-e PORT=$(APP_PORT) \
+		-p $(APP_PORT):$(APP_PORT) \
+		$(IMAGE)
+
 run-dev:
 	docker run \
-		-e PORT=8080 \
-		-p 8080:8080 \
+		-e PORT=$(APP_PORT) \
+		-p $(APP_PORT):$(APP_PORT) \
 		-v $(shell pwd):/usr/src/app \
 		--workdir /usr/src/app \
-		-it node:22.19.0-bookworm bash
+		-it $(BASE_IMAGE) bash
